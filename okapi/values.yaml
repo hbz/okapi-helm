@@ -103,16 +103,16 @@ probes:
 
 # -- Specifies whether an ingress should be created
 ingress:
-  enabled: true
+  enabled: false
   className: nginx
   annotations: 
-    external-dns.alpha.kubernetes.io/target: xxxxxxx.your-dns-target.com
+    external-dns.alpha.kubernetes.io/target: folio-k8s1.folio.hbz-nrw.de/okapi
     nginx.ingress.kubernetes.io/proxy-body-size: "10000m"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
     nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
   
   hosts:
-    - host: xyz.hostname-of-your-service.com
+    - host: okapi
       paths:
         - path: /
           pathType: ImplementationSpecific
@@ -155,7 +155,7 @@ affinity: {}
 config: {}
 
 persistentVolume:
-  enabled: false
+  enabled: true
   ## If defined, storageClassName: <storageClass>
   ## If set to "-", storageClassName: "", which disables dynamic provisioning
   ## If undefined (the default) or set to null, no storageClassName spec is
@@ -163,7 +163,7 @@ persistentVolume:
   ##   GKE, AWS & OpenStack)
   ##
   # storageClass: "-"
-  name: data
+  name: local-file
   accessModes:
     - ReadWriteOnce
   size: 8Gi
@@ -181,7 +181,8 @@ nodeSelector: {}
 tolerations: []
 
 
-secret: {"storage": "postgres","postgres_host": "<your_database_host>","postgres_username": "<your_database_username>","postgres_password": "<your_database_password>","postgres_database": "<your_database_name>","okapiurl": "http://okapi:9130"}
+# change postgres_password or get it from a secret store
+secret: {"storage": "postgres","postgres_host": "folio-zal-pg","postgres_username": "okapi","postgres_password": "okapi25","postgres_database": "okapi","okapiurl": "http://okapi:9130"}
 secrets: []
 
 
