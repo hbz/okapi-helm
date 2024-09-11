@@ -134,7 +134,7 @@ spec:
             name: okapi-log4j2-xml
         - name: "okapi-config"
           secret:
-            secretName: {{ include "okapi.fullname" . }}
+            secretName: "okapi-config"
             defaultMode: 420
       topologySpreadConstraints:
       - maxSkew: {{ .Values.topologySpreadConstraints.maxSkew }}

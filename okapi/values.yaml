@@ -181,8 +181,7 @@ nodeSelector: {}
 tolerations: []
 
 
-# change postgres_password or get it from a secret store
-secret: {"storage": "postgres","postgres_host": "folio-zal-pg","postgres_username": "okapi","postgres_password": "okapi25","postgres_database": "okapi","okapiurl": "http://okapi:9130"}
+#secret: {"storage": "postgres","postgres_host": "folio-zal-pg","postgres_username": "okapi","postgres_password": "okapi25","postgres_database": "okapi","okapiurl": "http://okapi:9130"}
 secrets: []
 
 
