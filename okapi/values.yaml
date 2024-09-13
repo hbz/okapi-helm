@@ -103,10 +103,10 @@ probes:
 
 # -- Specifies whether an ingress should be created
 ingress:
-  enabled: false
+  enabled: true
   className: nginx
   annotations: 
-    external-dns.alpha.kubernetes.io/target: folio-k8s1.folio.hbz-nrw.de/okapi
+    external-dns.alpha.kubernetes.io/target: okapi.folio-k8s1.folio.hbz-nrw.de
     nginx.ingress.kubernetes.io/proxy-body-size: "10000m"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
     nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
