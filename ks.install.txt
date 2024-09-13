@@ -1,0 +1,12 @@
+13.09.2024
+  Ingress installieren
+  vim templates/ingress.yaml
+     ingress:
+       enabled: true
+  # eine Manifestation des Charts erzeugen:
+  helm templates -f ../global-values.yaml okapi
+  dann den Teil "type: Ingress" nach
+   okapi_manifestations/ingress.yaml kopieren.
+  Dann nur diesen Teil ausführen (nicht das ganze Okapi erneut deployen):
+  kubectl -n folio-backend -f okapi_manifestations/ingress.yaml apply
+
