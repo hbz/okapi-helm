@@ -106,13 +106,13 @@ ingress:
   enabled: true
   className: nginx
   annotations: 
-    external-dns.alpha.kubernetes.io/target: okapi.folio-k8s1.folio.hbz-nrw.de
+    external-dns.alpha.kubernetes.io/target: platon.hbz-nrw.de
     nginx.ingress.kubernetes.io/proxy-body-size: "10000m"
     nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
     nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
   
   hosts:
-    - host: okapi
+    - host: folio-k8s1.folio.hbz-nrw.de
       paths:
         - path: /
           pathType: ImplementationSpecific

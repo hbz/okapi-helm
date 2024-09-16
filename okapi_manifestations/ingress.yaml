@@ -1,0 +1,30 @@
+# Source: okapi/templates/ingress.yaml
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: okapi-ingress
+  labels:
+    helm.sh/chart: okapi-0.1.17
+    app.kubernetes.io/name: okapi
+    app.kubernetes.io/instance: release-name
+    app.kubernetes.io/version: "5.1.2"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    external-dns.alpha.kubernetes.io/target: platon.hbz-nrw.de
+    nginx.ingress.kubernetes.io/proxy-body-size: 10000m
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "300"
+    nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: "folio-k8s1.folio.hbz-nrw.de"
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: okapi
+                port:
+                  number: 9130
+---

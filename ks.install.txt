@@ -1,12 +1,23 @@
 13.09.2024
   Ingress installieren
-  vim templates/ingress.yaml
+  cd ~/folio-helm-hbz/okapi-helm
+  vim okap/values.yaml
      ingress:
        enabled: true
   # eine Manifestation des Charts erzeugen:
-  helm templates -f ../global-values.yaml okapi
-  dann den Teil "type: Ingress" nach
+  helm template -f ../global-values.yaml okapi > /tmp/hik2
+  dann nur den Teil "type: Ingress" nach
    okapi_manifestations/ingress.yaml kopieren.
   Dann nur diesen Teil ausführen (nicht das ganze Okapi erneut deployen):
   kubectl -n folio-backend -f okapi_manifestations/ingress.yaml apply
 
+16.09.
+  den Ingress wieder deinstallieren:
+  kubectl -n folio-backend delete ingress okapi
+    ingress.networking.k8s.io "okapi" deleted
+  kubectl get ingress okapi-ingress --namespace=folio-backend
+NAME            CLASS   HOSTS                         ADDRESS                         PORTS   AGE
+okapi-ingress   nginx   folio-k8s1.folio.hbz-nrw.de   10.9.2.91,10.9.2.92,10.9.2.93   80      6m14s
+  auf 10.9.2.91 läuft auf Port 80 jetzt irgendwas
+  curl -XGET 10.9.2.93:80
+  aber nicht Okapi
