@@ -36,3 +36,13 @@ okapi-ingress   nginx   folio-k8s1.folio.hbz-nrw.de   10.9.2.91,10.9.2.92,10.9.2
 19.09.2024
  Doku (offiziell): https://kubernetes.io/docs/concepts/services-networking/ingress/
  Doku (praktische Anleitung): https://www.solo.io/topics/kubernetes-api-gateway/kubernetes-ingress
+ Also angeblich muss ich jetzt auch noch NodePorts verwenden, damit hier irgendwas funktioniert.
+ In dieser (offiziellen) Doku kommt es vor, aber die Seite ist irre lang: https://kubernetes.io/docs/concepts/services-networking/service/
+
+ Okapi noch mal deinstallieren: cd okapi-helm; helm uninstall -n folio-backend okapi
+ Den Okapi-Ingress auch wieder deinstallieren: kubectl -n folio-backend delete ingress okapi-ingress
+ Jetzt Okapi mit NodePort installieren: helm install -n folio-backend -f ../global-values.yaml okapi ./okapi
+  Error: INSTALLATION FAILED: 1 error occurred:
+        * Service "okapi" is invalid: spec.ports[0].nodePort: Invalid value: 9130: provided port is not in the valid range. The range of valid ports is 30000-32767
+  OK, das war zu erwarten, steht in der Doku.
+ 
