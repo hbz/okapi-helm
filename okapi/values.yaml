@@ -60,7 +60,7 @@ securityContext: {}
 service:
   enabled: true
   name: okapi
-  type: ClusterIP
+  type: NodePort
   http:
     enabled: false
   internal:

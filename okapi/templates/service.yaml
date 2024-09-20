@@ -5,14 +5,11 @@ metadata:
   labels:
     {{- include "okapi.labels" . | nindent 4 }}
 spec:
-  clusterIP: None
   type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
       name: okapi
-      nodePort: 9130
     - port: {{ .Values.service.second_port.port }}
       name: hazelcast
   selector:
     {{- include "okapi.selectorLabels" . | nindent 4 }}
-  type: NodePort
