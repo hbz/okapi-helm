@@ -117,8 +117,13 @@ spec:
                fieldRef:
                  apiVersion: v1
                  fieldPath: metadata.name
+            - name: PG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.global.db.folioSecret }}
+                  key: {{ .Values.global.db.okapiPwKey }}
             - name: JAVA_OPTIONS
-              value: "-Djava.awt.headless=true -Dlog4j.configurationFile=/etc/log4j2.xml -Dhost=$(POD_IP) -Dnodename=$(POD_NAME) -Dhazelcast.logging.type=log4j -Dhazelcast.shutdownhook.policy=GRACEFUL -Dhazelcast.graceful.shutdown.max.wait=300 -Dlog4j2.formatMsgNoLookups=true"
+              value: "-Djava.awt.headless=true -Dlog4j.configurationFile=/etc/log4j2.xml -Dhost=$(POD_IP) -Dnodename=$(POD_NAME) -Dpostgres_password=$(PG_PASSWORD) -Dhazelcast.logging.type=log4j -Dhazelcast.shutdownhook.policy=GRACEFUL -Dhazelcast.graceful.shutdown.max.wait=300 -Dlog4j2.formatMsgNoLookups=true"
             {{- range $key, $value := .Values.config }}
             - name: {{ $key }}
               value: {{ $value | quote }}
@@ -132,7 +137,7 @@ spec:
             name: okapi-log4j2-xml
         - name: "okapi-config"
           secret:
-            secretName: "okapi-config"
+            secretName: {{ include "okapi.fullname" . }}
             defaultMode: 420
       {{- if .Values.nodeSelector }}
       {{- with .Values.nodeSelector }}

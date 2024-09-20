@@ -103,7 +103,7 @@ probes:
 
 # -- Specifies whether an ingress should be created
 ingress:
-  enabled: true
+  enabled: false
   className: nginx
   annotations: 
     external-dns.alpha.kubernetes.io/target: platon.hbz-nrw.de
@@ -181,7 +181,7 @@ nodeSelector: {}
 tolerations: []
 
 
-#secret: {"storage": "postgres","postgres_host": "folio-zal-pg","postgres_username": "okapi","postgres_password": "okapi25","postgres_database": "okapi","okapiurl": "http://okapi:9130"}
+secret: {"storage": "postgres","postgres_host": "folio-zal-pg","postgres_username": "okapi","postgres_database": "okapi","okapiurl": "http://okapi:9130"}
 secrets: []
 
 
