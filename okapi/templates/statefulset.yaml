@@ -41,10 +41,10 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+#            - "-conf"
+#            - /etc/okapi-config.json
           args:
             - {{ .Values.mode }}
-            - "-conf"
-            - /etc/okapi-config.json
             - "-hazelcast-config-file"
             - /etc/hazelcast.xml
             - "-cluster-host"
@@ -66,6 +66,9 @@ spec:
             - name: {{ $key }}
               value: {{ $value | quote }}
             {{- end }}
+          envFrom:
+            - secretRef:
+              name: {{ .Values.global.db.okapiSecret }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
@@ -114,6 +117,9 @@ spec:
           lifecycle:
             {{- toYaml .Values.lifecycle | trim | nindent 12 }}
           {{- end }}
+#          - name: "okapi-config"
+#            mountPath: "/etc/okapi-config.json"
+#            subPath: "okapi-config.json"
           volumeMounts:
           - name: "hazelcast"
             mountPath: "/etc/hazelcast.xml"
@@ -122,9 +128,10 @@ spec:
             readOnly: true
             mountPath: "/etc/log4j2.xml"
             subPath: "log4j2.xml"
-          - name: "okapi-config"
-            mountPath: "/etc/okapi-config.json"
-            subPath: "okapi-config.json"
+#        - name: "okapi-config"
+#          secret:
+#            secretName: "okapi-config"
+#            defaultMode: 420
       volumes:
         - name: "hazelcast"
           configMap:
@@ -132,10 +139,6 @@ spec:
         - name: "log4j2-xml"
           configMap:
             name: okapi-log4j2-xml
-        - name: "okapi-config"
-          secret:
-            secretName: "okapi-config"
-            defaultMode: 420
       topologySpreadConstraints:
       - maxSkew: {{ .Values.topologySpreadConstraints.maxSkew }}
         topologyKey: {{ .Values.topologySpreadConstraints.topologyKey }}

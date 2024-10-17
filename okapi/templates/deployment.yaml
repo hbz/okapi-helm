@@ -39,10 +39,10 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+#            - "-conf"
+#            - /etc/okapi-config.json
           args:
             - {{ .Values.mode }}
-            - "-conf"
-            - /etc/okapi-config.json
             - "-hazelcast-config-file"
             - /etc/hazelcast.xml
             - "-cluster-host"
@@ -95,6 +95,9 @@ spec:
           lifecycle:
             {{- toYaml .Values.lifecycle | trim | nindent 12 }}
           {{- end }}
+#          - name: "okapi-config"
+#            mountPath: "/etc/okapi-config.json"
+#            subPath: "okapi-config.json"
           volumeMounts:
           - name: "hazelcast"
             mountPath: "/etc/hazelcast.xml"
@@ -103,9 +106,6 @@ spec:
             readOnly: true
             mountPath: "/etc/log4j2.xml"
             subPath: "log4j2.xml"
-          - name: "okapi-config"
-            mountPath: "/etc/okapi-config.json"
-            subPath: "okapi-config.json"
           env:
             - name: POD_IP
               valueFrom:
@@ -117,17 +117,19 @@ spec:
                fieldRef:
                  apiVersion: v1
                  fieldPath: metadata.name
-            - name: PG_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.global.db.folioSecret }}
-                  key: {{ .Values.global.db.okapiPwKey }}
             - name: JAVA_OPTIONS
-              value: "-Djava.awt.headless=true -Dlog4j.configurationFile=/etc/log4j2.xml -Dhost=$(POD_IP) -Dnodename=$(POD_NAME) -Dpostgres_password=$(PG_PASSWORD) -Dhazelcast.logging.type=log4j -Dhazelcast.shutdownhook.policy=GRACEFUL -Dhazelcast.graceful.shutdown.max.wait=300 -Dlog4j2.formatMsgNoLookups=true"
+              value: "{{ .Values.javaOptions }}"
             {{- range $key, $value := .Values.config }}
             - name: {{ $key }}
               value: {{ $value | quote }}
             {{- end }}
+          envFrom:
+            - secretRef:
+              name: "{{ .Values.global.db.okapiSecret }}"
+#        - name: "okapi-config"
+#          secret:
+#            secretName: {{ include "okapi.fullname" . }}
+#            defaultMode: 420
       volumes:
         - name: "hazelcast"
           configMap:
@@ -135,10 +137,6 @@ spec:
         - name: "log4j2-xml"
           configMap:
             name: okapi-log4j2-xml
-        - name: "okapi-config"
-          secret:
-            secretName: {{ include "okapi.fullname" . }}
-            defaultMode: 420
       {{- if .Values.nodeSelector }}
       {{- with .Values.nodeSelector }}
       nodeSelector:

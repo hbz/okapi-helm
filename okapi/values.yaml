@@ -26,7 +26,7 @@ clustered:
 
 mode: cluster
 
-javaOptions: -Djava.awt.headless=true -Dlog4j.configurationFile=/etc/log4j2.xml -Dhost=$(POD_IP) -Dnodename=$(POD_NAME) -Dhazelcast.logging.type=log4j -Dhazelcast.shutdownhook.policy=GRACEFUL -Dhazelcast.graceful.shutdown.max.wait=300 -Dlog4j2.formatMsgNoLookups=true
+javaOptions: -Djava.awt.headless=true -Dlog4j.configurationFile=/etc/log4j2.xml -Dhost=$(POD_IP) -Dnodename=$(POD_NAME) -Dstorage=postgres -Dpostgres_host=$(PG_HOST) -Dpostgres_port=$(PG_PORT) -Dpostgres_database=$(PG_DATABASE) -Dpostgres_username=$(PG_USERNAME) -Dpostgres_password=$(PG_PASSWORD) -Dhazelcast.logging.type=log4j -Dhazelcast.shutdownhook.policy=GRACEFUL -Dhazelcast.graceful.shutdown.max.wait=300 -Dlog4j2.formatMsgNoLookups=true
 # -- Okapi docker image 
 image:
   repository: folioorg/okapi
@@ -181,7 +181,7 @@ nodeSelector: {}
 tolerations: []
 
 
-secret: {"storage": "postgres","postgres_host": "folio-zal-pg","postgres_username": "okapi","postgres_database": "okapi","okapiurl": "http://okapi:9130"}
+### secret: {"storage": "postgres","postgres_host": "folio-zal-pg","postgres_username": "okapi","postgres_database": "okapi","okapiurl": "http://okapi:9130"}
 secrets: []
 
 
