@@ -124,8 +124,8 @@ spec:
               value: {{ $value | quote }}
             {{- end }}
           envFrom:
-            - secretRef:
-              name: "{{ .Values.global.db.okapiSecret }}"
+          - secretRef:
+              name: {{ .Values.global.db.okapiSecret }}
 #        - name: "okapi-config"
 #          secret:
 #            secretName: {{ include "okapi.fullname" . }}
