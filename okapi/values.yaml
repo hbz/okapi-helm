@@ -103,7 +103,7 @@ probes:
 
 # -- Specifies whether an ingress should be created
 ingress:
-  enabled: false
+  enabled: true
   className: nginx
   annotations: 
     external-dns.alpha.kubernetes.io/target: platon.hbz-nrw.de
